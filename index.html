@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#080B14">
+<meta name="color-scheme" content="dark">
+<title>파뷸라 울티마 — 퀵가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    color-scheme: dark only;
+    --gold: #D4AF52;
+    --gold-light: #F2D88A;
+    --gold-bright: #FFE9A8;
+    --gold-dark: #9A7420;
+    --crimson: #A82828;
+    --crimson-light: #D14B3A;
+    --ink: #0B0F1C;
+    --ink-panel: #121829;
+    --ink-panel-2: #161D31;
+    --arcane: #7B5CC4;
+    --arcane-light: #B79CF0;
+    --emerald: #3FA67C;
+    --emerald-light: #6FD6A8;
+    --text-primary: #F4ECD8;
+    --text-secondary: #D8C99A;
+    --text-muted: #A8966E;
+    --border: rgba(212, 175, 82, 0.28);
+    --border-strong: rgba(212, 175, 82, 0.6);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; background: #0B0F1C; background-color: #0B0F1C; }
+  body {
+    background: #0B0F1C;
+    color: var(--text-primary);
+    font-family: 'Crimson Pro', 'EB Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 18% 12%, rgba(123,92,196,0.16) 0%, transparent 48%),
+      radial-gradient(ellipse at 82% 88%, rgba(168,40,40,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% -10%, rgba(212,175,82,0.1) 0%, transparent 45%);
+    pointer-events: none; z-index: 0;
+  }
+  /* parchment grain + vignette */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    pointer-events: none; z-index: 0;
+  }
+  .vignette {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    box-shadow: inset 0 0 200px 40px rgba(0,0,0,0.55);
+  }
+  /* floating arcane particles */
+  .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .particle {
+    position: absolute; bottom: -10px;
+    width: 3px; height: 3px; border-radius: 50%;
+    background: radial-gradient(circle, var(--gold-light), transparent 70%);
+    box-shadow: 0 0 6px 1px rgba(242,216,138,0.6);
+    animation: floatUp linear infinite;
+    opacity: 0;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.5; }
+    100% { transform: translateY(-100vh) translateX(var(--drift, 20px)); opacity: 0; }
+  }
+  .wrap { max-width: 820px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+  /* ── HEADER ── */
+  .guide-header {
+    text-align: center;
+    padding: 64px 20px 40px;
+    position: relative;
+  }
+  .guide-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 11px; letter-spacing: 5px;
+    color: var(--gold); text-transform: uppercase;
+    opacity: 0.85; margin-bottom: 16px;
+  }
+  .guide-emblem {
+    width: 60px; height: 60px; margin: 0 auto 18px;
+    filter: drop-shadow(0 0 12px rgba(212,175,82,0.4));
+    animation: breathe 5s ease-in-out infinite;
+  }
+  .guide-emblem path, .guide-emblem circle, .guide-emblem line {
+    stroke: var(--gold); fill: none; stroke-width: 1.4;
+  }
+  @keyframes breathe { 0%,100%{opacity:.75} 50%{opacity:1} }
+  .guide-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(30px, 6vw, 50px);
+    color: var(--gold-light);
+    line-height: 1.15; letter-spacing: 2px;
+    text-shadow: 0 0 34px rgba(242,216,138,0.4);
+  }
+  .guide-sub {
+    font-family: 'Cinzel', serif;
+    font-size: 13px; letter-spacing: 3px;
+    color: var(--text-secondary); margin-top: 12px;
+  }
+  .guide-rule {
+    display: flex; align-items: center; gap: 14px;
+    max-width: 320px; margin: 26px auto 0;
+  }
+  .guide-rule-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.5; }
+  .guide-rule-gem { color: var(--gold); font-size: 10px; text-shadow: 0 0 10px rgba(212,175,82,0.6); }
+
+  .intro {
+    font-style: italic; color: var(--text-secondary);
+    text-align: center; max-width: 600px; margin: 0 auto 10px;
+    font-size: 17px;
+  }
+
+  /* ── OVERVIEW STRIP ── */
+  .overview {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px; margin: 36px 0 8px;
+  }
+  .ov-chip {
+    background: linear-gradient(160deg, var(--ink-panel), var(--ink-panel-2));
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 8px;
+    text-align: center;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    cursor: default;
+  }
+  .ov-chip:hover { transform: translateY(-3px); border-color: var(--gold); box-shadow: 0 6px 18px rgba(0,0,0,0.4), 0 0 16px rgba(212,175,82,0.18); }
+  .ov-num { font-family: 'Cinzel Decorative', serif; font-size: 20px; color: var(--gold-light); display: block; }
+  .ov-label { font-size: 11px; color: var(--text-secondary); margin-top: 4px; letter-spacing: 0.5px; }
+
+  /* ── STEP CARD ── */
+  .step {
+    background: linear-gradient(160deg, var(--ink-panel) 0%, var(--ink-panel-2) 100%);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 8px;
+    padding: 24px 26px;
+    margin: 22px 0;
+    position: relative;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 6px 22px rgba(0,0,0,0.35);
+  }
+  .step-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px; }
+  .step-badge {
+    font-family: 'Cinzel Decorative', serif; font-weight: 900;
+    font-size: 30px; color: var(--gold-light);
+    line-height: 1; flex-shrink: 0;
+    text-shadow: 0 0 18px rgba(242,216,138,0.4);
+    min-width: 40px;
+  }
+  .step-title {
+    font-family: 'Cinzel', serif; font-weight: 700;
+    font-size: 19px; color: var(--gold-light);
+    letter-spacing: 1px;
+  }
+  .step-title .en { display:block; font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; color:var(--text-muted); font-weight:400; margin-top:3px; text-transform:uppercase; }
+  .step p { margin-bottom: 10px; }
+  .step p:last-child { margin-bottom: 0; }
+  .step strong { color: var(--gold-light); font-weight: 600; }
+  .step em { color: var(--arcane-light); font-style: italic; }
+
+  .tip {
+    margin-top: 14px; padding: 12px 16px;
+    background: rgba(123,92,196,0.1);
+    border: 1px solid rgba(123,92,196,0.3);
+    border-radius: 6px;
+    font-size: 15px; color: var(--text-secondary);
+  }
+  .tip::before { content: '✦ '; color: var(--arcane-light); }
+
+  /* ── FORMULA BOX ── */
+  .formula {
+    background: rgba(212,175,82,0.07);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 18px; margin: 14px 0;
+  }
+  .formula-row { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; border-bottom: 1px dotted rgba(212,175,82,0.2); flex-wrap: wrap; gap: 6px; }
+  .formula-row:last-child { border-bottom: none; }
+  .formula-name { color: var(--text-secondary); font-size: 15px; }
+  .formula-val { font-family: 'Cinzel', serif; color: var(--gold-light); font-size: 14px; font-weight: 600; }
+
+  /* ── ARRAY OPTIONS ── */
+  .arrays { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin: 14px 0; }
+  .array-opt { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 14px 10px; text-align: center; }
+  .array-name { font-family:'Cinzel',serif; font-size: 12px; color: var(--gold); letter-spacing:1px; margin-bottom: 8px; text-transform: uppercase; }
+  .array-dice { font-family:'Cinzel',serif; font-size: 17px; color: var(--gold-light); font-weight:700; letter-spacing: 1px; }
+  .array-desc { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+
+  /* ── ATTRIBUTE GRID ── */
+  .attr-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin: 12px 0; }
+  .attr-item { display: flex; gap: 10px; align-items: baseline; background: rgba(255,255,255,0.02); border:1px solid var(--border); border-radius: 6px; padding: 10px 14px; }
+  .attr-abbr { font-family:'Cinzel',serif; font-weight:700; color: var(--gold-light); font-size: 13px; flex-shrink:0; }
+  .attr-txt { font-size: 14px; color: var(--text-secondary); }
+
+  /* ── DICE NOTE ── */
+  .dice-note { text-align:center; font-family:'Cinzel',serif; font-size: 13px; color: var(--gold); letter-spacing: 1px; margin: 10px 0; }
+
+  /* ── FOOTER ── */
+  .guide-footer { text-align: center; margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13px; }
+  .guide-footer .ornament { color: var(--gold); font-size: 14px; letter-spacing: 10px; opacity: 0.55; margin-bottom: 12px; }
+  .pg-ref { color: var(--gold); font-size: 12px; opacity: 0.8; }
+
+  @media (max-width: 600px) {
+    .overview { grid-template-columns: repeat(2, 1fr); }
+    .arrays { grid-template-columns: 1fr; }
+    .attr-grid { grid-template-columns: 1fr; }
+    .step { padding: 20px 18px; }
+    body { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .guide-emblem { animation: none; } }
+
+
+  /* ===== TAB NAVIGATION ===== */
+  .tabnav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; gap: 6px; justify-content: center;
+    padding: 12px 12px;
+    background: rgba(8, 11, 20, 0.86);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .tab-btn {
+    flex: 1; max-width: 220px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 11px 10px;
+    background: linear-gradient(160deg, var(--ink-panel), var(--ink-panel-2));
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    color: var(--text-secondary);
+    font-family: 'Cinzel', serif; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.5px; cursor: pointer;
+    transition: all 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tab-btn .tab-ico { font-size: 16px; line-height: 1; }
+  .tab-btn:hover { border-color: var(--gold); color: var(--gold-light); transform: translateY(-2px); }
+  .tab-btn.active {
+    border-color: var(--gold);
+    color: var(--gold-bright);
+    background: linear-gradient(160deg, rgba(212,175,82,0.22), rgba(212,175,82,0.06));
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4), 0 0 18px rgba(212,175,82,0.25);
+  }
+  .tab-panel { display: none; animation: fadeIn 0.4s ease; }
+  .tab-panel.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .tab-label-full { display: inline; }
+  .tab-label-short { display: none; }
+  @media (max-width: 600px) {
+    .tabnav { gap: 5px; padding: 10px 8px; }
+    .tab-btn { font-size: 12px; padding: 10px 6px; flex-direction: column; gap: 4px; }
+    .tab-label-full { display: none; }
+    .tab-label-short { display: inline; }
+  }
+  @media (prefers-reduced-motion: reduce) { .tab-panel { animation: none; } }
+
+
+  /* ===== MASTER BANNER ===== */
+  .master-banner { text-align: center; padding: 30px 20px 0; }
+  .mb-eyebrow { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; opacity: 0.7; }
+
+
+/* ===== combat-specific ===== */
+
+
+  /* HEADER */
+  .guide-header { text-align: center; padding: 64px 20px 36px; }
+
+  .guide-emblem path, .guide-emblem line, .guide-emblem circle { stroke: var(--gold); fill: none; stroke-width: 1.4; }
+
+  @keyframes breathe { 0%,100%{opacity:.75} 50%{opacity:1} }
+
+
+  /* SECTION HEADING */
+  .sec-title {
+    font-family: 'Cinzel', serif; font-weight: 700; font-size: 21px;
+    color: var(--gold-light); letter-spacing: 1px;
+    margin: 48px 0 18px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--border); position: relative;
+  }
+
+  .sec-title::before { content: '⚔ '; color: var(--gold); font-size: 15px; }
+
+  .sec-title::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 60px; height: 2px; background: linear-gradient(90deg, var(--gold-light), transparent); box-shadow: 0 0 8px rgba(242,216,138,0.6); }
+
+
+  .lead-note { color: var(--text-secondary); margin-bottom: 18px; font-size: 16px; }
+
+
+  /* FLOW (round structure) */
+  .flow { margin: 18px 0; }
+
+  .flow-step {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: linear-gradient(160deg, var(--ink-panel), var(--ink-panel-2));
+    border: 1px solid var(--border); border-left: 3px solid var(--gold);
+    border-radius: 8px; padding: 16px 20px; margin-bottom: 12px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 16px rgba(0,0,0,0.3);
+  }
+
+  .flow-badge { font-family: 'Cinzel Decorative', serif; font-weight: 900; font-size: 22px; color: var(--gold-light); flex-shrink: 0; min-width: 32px; text-shadow: 0 0 14px rgba(242,216,138,0.4); }
+
+  .flow-body h4 { font-family: 'Cinzel', serif; font-size: 15px; color: var(--gold-light); margin-bottom: 5px; letter-spacing: 0.5px; }
+
+  .flow-body p { font-size: 15px; color: var(--text-secondary); margin: 0; }
+
+  .flow-body strong { color: var(--gold-light); }
+
+
+  /* CALLOUT */
+  .box {
+    background: linear-gradient(160deg, var(--ink-panel), var(--ink-panel-2));
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 20px 24px; margin: 20px 0;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 6px 22px rgba(0,0,0,0.35);
+  }
+
+  .box.arcane { border-color: rgba(123,92,196,0.34); border-left: 3px solid var(--arcane-light); }
+
+  .box.crimson { border-color: rgba(168,40,40,0.34); border-left: 3px solid var(--crimson-light); }
+
+  .box.gold { border-left: 3px solid var(--gold); }
+
+  .box-label { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+
+  .box.arcane .box-label { color: var(--arcane-light); }
+
+  .box.crimson .box-label { color: var(--crimson-light); }
+
+  .box.gold .box-label { color: var(--gold-light); }
+
+  .box p { margin-bottom: 8px; }
+
+  .box p:last-child { margin-bottom: 0; }
+
+  .box strong { color: var(--gold-light); }
+
+
+  /* ATTACK SEQUENCE */
+  .seq { counter-reset: seq; margin: 16px 0; }
+
+  .seq-item { position: relative; padding: 12px 16px 12px 52px; margin-bottom: 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; }
+
+  .seq-item::before { counter-increment: seq; content: counter(seq); position: absolute; left: 14px; top: 12px; width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(160deg, var(--gold), var(--gold-dark)); color: #1a1206; font-family: 'Cinzel', serif; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(212,175,82,0.4); }
+
+  .seq-item h4 { font-family: 'Cinzel', serif; font-size: 15px; color: var(--gold-light); margin-bottom: 3px; }
+
+  .seq-item p { font-size: 14.5px; color: var(--text-secondary); margin: 0; }
+
+  .seq-item strong { color: var(--gold-light); }
+
+
+  /* ACTION GRID */
+  .actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 16px 0; }
+
+  .act { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 7px; padding: 13px 15px; }
+
+  .act-head { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+
+  .act-icon { font-size: 18px; }
+
+  .act-name { font-family: 'Cinzel', serif; font-weight: 600; font-size: 14px; color: var(--gold-light); }
+
+  .act-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; }
+
+
+  /* STATUS GRID */
+  .status-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; margin: 14px 0; }
+
+  .stat-item { display: flex; gap: 10px; align-items: baseline; background: rgba(168,40,40,0.08); border: 1px solid rgba(168,40,40,0.25); border-radius: 6px; padding: 10px 14px; }
+
+  .stat-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 13.5px; color: var(--crimson-light); flex-shrink: 0; min-width: 38px; }
+
+  .stat-eff { font-size: 13.5px; color: var(--text-secondary); }
+
+  .stat-eff b { color: var(--text-primary); font-weight: 600; }
+
+
+  /* AFFINITY */
+  .affinity { display: grid; grid-template-columns: repeat(2,1fr); gap: 9px; margin: 14px 0; }
+
+  .aff { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 11px 15px; }
+
+  .aff-name { font-family:'Cinzel',serif; font-weight:600; font-size: 13.5px; margin-bottom: 3px; }
+
+  .aff-desc { font-size: 13px; color: var(--text-secondary); }
+
+  .aff.vuln .aff-name { color: var(--crimson-light); }
+
+  .aff.resist .aff-name { color: var(--emerald-light); }
+
+  .aff.immune .aff-name { color: var(--gold-light); }
+
+  .aff.absorb .aff-name { color: var(--arcane-light); }
+
+
+  /* DICE HIGHLIGHT */
+  .dice-key { font-family: 'Cinzel', serif; color: var(--gold-light); font-weight: 600; }
+
+  .formula-inline { background: rgba(212,175,82,0.1); border: 1px solid var(--border); border-radius: 4px; padding: 1px 8px; font-family: 'Cinzel', serif; font-size: 14px; color: var(--gold-light); white-space: nowrap; }
+
+
+  .guide-footer { text-align: center; margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13px; }
+
+
+  @media (max-width: 600px) {
+    .actions, .status-grid, .affinity { grid-template-columns: 1fr; }
+    body { font-size: 16px; }
+    .box { padding: 18px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) { .guide-emblem { animation: none; } }
+
+/* ===== adventure-specific ===== */
+
+
+  /* HEADER */
+  .guide-header { text-align: center; padding: 64px 20px 36px; }
+
+  .guide-emblem path, .guide-emblem line, .guide-emblem circle, .guide-emblem polygon { stroke: var(--gold); fill: none; stroke-width: 1.4; }
+
+  @keyframes breathe { 0%,100%{opacity:.75} 50%{opacity:1} }
+
+
+  /* SECTION HEADING */
+  .sec-title {
+    font-family: 'Cinzel', serif; font-weight: 700; font-size: 21px;
+    color: var(--gold-light); letter-spacing: 1px;
+    margin: 48px 0 18px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--border); position: relative;
+  }
+
+  .sec-title .ico { color: var(--gold); font-size: 15px; margin-right: 4px; }
+
+  .sec-title::after { content: ''; position: absolute; left: 0; bottom: -1px; width: 60px; height: 2px; background: linear-gradient(90deg, var(--gold-light), transparent); box-shadow: 0 0 8px rgba(242,216,138,0.6); }
+
+  .lead-note { color: var(--text-secondary); margin-bottom: 18px; font-size: 16px; }
+
+
+  /* FLOW */
+  .flow { margin: 18px 0; }
+
+  .flow-step {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: linear-gradient(160deg, var(--ink-panel), var(--ink-panel-2));
+    border: 1px solid var(--border); border-left: 3px solid var(--gold);
+    border-radius: 8px; padding: 16px 20px; margin-bottom: 12px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 16px rgba(0,0,0,0.3);
+  }
+
+  .flow-badge { font-family: 'Cinzel Decorative', serif; font-weight: 900; font-size: 22px; color: var(--gold-light); flex-shrink: 0; min-width: 32px; text-shadow: 0 0 14px rgba(242,216,138,0.4); }
+
+  .flow-body h4 { font-family: 'Cinzel', serif; font-size: 15px; color: var(--gold-light); margin-bottom: 5px; letter-spacing: 0.5px; }
+
+  .flow-body p { font-size: 15px; color: var(--text-secondary); margin: 0; }
+
+  .flow-body strong { color: var(--gold-light); }
+
+
+  /* BOX */
+  .box {
+    background: linear-gradient(160deg, var(--ink-panel), var(--ink-panel-2));
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 20px 24px; margin: 20px 0;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 6px 22px rgba(0,0,0,0.35);
+  }
+
+  .box.arcane { border-left: 3px solid var(--arcane-light); }
+
+  .box.emerald { border-left: 3px solid var(--emerald-light); }
+
+  .box.gold { border-left: 3px solid var(--gold); }
+
+  .box-label { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+
+  .box.arcane .box-label { color: var(--arcane-light); }
+
+  .box.emerald .box-label { color: var(--emerald-light); }
+
+  .box.gold .box-label { color: var(--gold-light); }
+
+  .box p { margin-bottom: 8px; }
+ .box p:last-child { margin-bottom: 0; }
+
+  .box strong { color: var(--gold-light); }
+
+
+  /* SCENE TYPE CARDS */
+  .scene-types { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin: 16px 0; }
+
+  .scene-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 7px; padding: 14px; text-align: center; }
+
+  .scene-card .ic { font-size: 22px; display: block; margin-bottom: 6px; }
+
+  .scene-card h4 { font-family: 'Cinzel', serif; font-size: 14px; color: var(--gold-light); margin-bottom: 5px; }
+
+  .scene-card p { font-size: 13px; color: var(--text-secondary); margin: 0; line-height: 1.45; }
+
+
+  /* CHECK TABLE */
+  .check-table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14.5px; }
+
+  .check-table th { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border-strong); }
+
+  .check-table td { padding: 8px 12px; border-bottom: 1px dotted rgba(212,175,82,0.18); color: var(--text-secondary); vertical-align: top; }
+
+  .check-table td.dice { font-family: 'Cinzel', serif; color: var(--gold-light); white-space: nowrap; font-size: 13.5px; }
+
+  .check-table tr:last-child td { border-bottom: none; }
+
+
+  /* THREAT TABLE */
+  .threat-table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+
+  .threat-table th { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); padding: 8px 10px; border-bottom: 1px solid var(--border-strong); text-align: left; }
+
+  .threat-table td { padding: 8px 10px; border-bottom: 1px dotted rgba(212,175,82,0.18); color: var(--text-secondary); }
+
+  .threat-table td.dl { font-family: 'Cinzel', serif; color: var(--gold-light); text-align: center; white-space: nowrap; }
+
+  .threat-table tr:last-child td { border-bottom: none; }
+
+
+  /* IP / consumables */
+  .ip-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 9px; margin: 14px 0; }
+
+  .ip-item { display: flex; gap: 10px; align-items: baseline; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; }
+
+  .ip-cost { font-family: 'Cinzel', serif; font-weight: 700; font-size: 13px; color: var(--emerald-light); flex-shrink: 0; min-width: 38px; }
+
+  .ip-eff { font-size: 13.5px; color: var(--text-secondary); }
+
+  .ip-eff b { color: var(--text-primary); font-weight: 600; }
+
+
+  /* TWO COLUMN MINI */
+  .mini-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin: 14px 0; }
+
+  .mini { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 7px; padding: 13px 15px; }
+
+  .mini h4 { font-family: 'Cinzel', serif; font-size: 14px; color: var(--gold-light); margin-bottom: 4px; }
+
+  .mini p { font-size: 13.5px; color: var(--text-secondary); margin: 0; line-height: 1.5; }
+
+
+  .formula-inline { background: rgba(212,175,82,0.1); border: 1px solid var(--border); border-radius: 4px; padding: 1px 8px; font-family: 'Cinzel', serif; font-size: 14px; color: var(--gold-light); white-space: nowrap; }
+
+
+  .guide-footer { text-align: center; margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13px; }
+
+
+  @media (max-width: 600px) {
+    .scene-types, .ip-grid, .mini-grid { grid-template-columns: 1fr; }
+    body { font-size: 16px; } .box { padding: 18px; }
+    .check-table, .threat-table { font-size: 13px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) { .guide-emblem { animation: none; } }
+
+  /* ════════════════════════════════════════════ */
+  /* ✦ LUXURY POLISH — premium grimoire upgrades   */
+  /* ════════════════════════════════════════════ */
+
+  /* — Master banner: gilded title plate — */
+  .master-banner { padding: 38px 20px 6px; position: relative; }
+  .mb-eyebrow {
+    display: inline-block; position: relative;
+    background: linear-gradient(180deg, var(--gold-bright), var(--gold-dark));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+  }
+  .mb-eyebrow::before, .mb-eyebrow::after {
+    content: '✦'; -webkit-text-fill-color: var(--gold);
+    margin: 0 14px; font-size: 9px; vertical-align: middle; opacity: 0.7;
+  }
+
+  /* — Tab navigation: refined gilded rail — */
+  .tabnav {
+    background: linear-gradient(180deg, rgba(10,13,24,0.94), rgba(10,13,24,0.78));
+    border-bottom: 1px solid var(--border-strong);
+    box-shadow: 0 6px 30px -8px rgba(0,0,0,0.7), inset 0 -1px 0 rgba(212,175,82,0.12);
+  }
+  .tab-btn {
+    position: relative; overflow: hidden;
+    border-radius: 11px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  }
+  .tab-btn::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(242,216,138,0.18) 50%, transparent 70%);
+    transform: translateX(-120%); transition: transform 0.6s ease;
+  }
+  .tab-btn:hover::after { transform: translateX(120%); }
+  .tab-btn.active {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.45), 0 0 22px rgba(212,175,82,0.35), inset 0 1px 0 rgba(255,233,168,0.25);
+  }
+  .tab-btn.active .tab-ico { filter: drop-shadow(0 0 6px rgba(242,216,138,0.7)); }
+
+  /* — Page panel: decorative double frame like a real grimoire page — */
+  .tab-panel.active .wrap {
+    position: relative;
+    padding-top: 8px; padding-bottom: 8px;
+  }
+  .tab-panel .wrap::before {
+    content: ''; position: absolute; inset: 14px 2px;
+    border: 1px solid rgba(212,175,82,0.14);
+    border-radius: 4px; pointer-events: none;
+    mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+  }
+
+  /* — Guide header: radiant halo + gold-foil title — */
+  .guide-header { padding-top: 40px; }
+  .guide-header::before {
+    content: ''; position: absolute; top: 30px; left: 50%; transform: translateX(-50%);
+    width: 280px; height: 280px; pointer-events: none;
+    background: radial-gradient(circle, rgba(212,175,82,0.16) 0%, transparent 60%);
+    filter: blur(8px);
+  }
+  .guide-title {
+    background: linear-gradient(175deg, #FFF4D6 0%, var(--gold-light) 30%, var(--gold) 55%, var(--gold-dark) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 1px rgba(0,0,0,0.5)) drop-shadow(0 0 26px rgba(242,216,138,0.4));
+    position: relative;
+  }
+  .guide-emblem { filter: drop-shadow(0 0 14px rgba(212,175,82,0.55)); }
+  /* twin laurels flanking the emblem area */
+  .guide-rule-gem { animation: gemPulse 4s ease-in-out infinite; }
+  @keyframes gemPulse { 0%,100%{ text-shadow: 0 0 10px rgba(212,175,82,0.6);} 50%{ text-shadow: 0 0 18px rgba(242,216,138,1);} }
+
+  /* — Section titles: illuminated manuscript style — */
+  .sec-title {
+    font-size: 22px;
+    background: linear-gradient(180deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .sec-title .ico, .sec-title::before {
+    -webkit-text-fill-color: initial;
+  }
+  .sec-title::after { height: 2px; width: 80px; background: linear-gradient(90deg, var(--gold-light), var(--gold-dark) 60%, transparent); box-shadow: 0 0 10px rgba(242,216,138,0.7); }
+
+  /* — Boxes: inner gilt edge + corner flourishes — */
+  .box { position: relative; }
+  .box::before, .box::after {
+    content: ''; position: absolute; width: 16px; height: 16px; pointer-events: none; opacity: 0.6;
+  }
+  .box::before { top: 7px; left: 7px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); border-top-left-radius: 4px; }
+  .box::after { bottom: 7px; right: 7px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); border-bottom-right-radius: 4px; }
+
+  /* — Flow steps: numbered medallion glow — */
+  .flow-step { transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+  .flow-step:hover { transform: translateX(4px); border-left-color: var(--gold-light); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 26px rgba(0,0,0,0.4), -4px 0 16px -8px rgba(212,175,82,0.4); }
+
+  /* — Overview chips: shimmer on hover already; add gilt top edge — */
+  .ov-chip { position: relative; overflow: hidden; }
+  .ov-chip::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.5; }
+
+  /* — Tables: gilded header rule — */
+  .check-table th, .threat-table th { background: linear-gradient(180deg, rgba(212,175,82,0.12), transparent); }
+
+  /* — Reveal-on-scroll — */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* — Scroll progress bar — */
+  .scroll-prog { position: fixed; top: 0; left: 0; height: 2px; width: 0; z-index: 200; background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-bright)); box-shadow: 0 0 10px rgba(242,216,138,0.8); transition: width 0.1s linear; }
+
+  /* — Footer flourish — */
+  .guide-footer .ornament { animation: gemPulse 5s ease-in-out infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .particle, .guide-rule-gem, .guide-footer .ornament { animation: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-prog" id="scrollProg"></div>
+<div class="vignette"></div>
+<div class="particles" id="particles"></div>
+
+  <div class="master-banner">
+    <div class="mb-eyebrow">Fabula Ultima · 퀵가이드 모음</div>
+  </div>
+
+
+<nav class="tabnav">
+  <button class="tab-btn active" data-tab="character"><span class="tab-ico">📜</span><span class="tab-label-full">캐릭터 만들기</span><span class="tab-label-short">캐릭터</span></button>
+  <button class="tab-btn" data-tab="combat"><span class="tab-ico">⚔️</span><span class="tab-label-full">전투</span><span class="tab-label-short">전투</span></button>
+  <button class="tab-btn" data-tab="adventure"><span class="tab-ico">🧭</span><span class="tab-label-full">어드벤처</span><span class="tab-label-short">어드벤처</span></button>
+</nav>
+
+<div class="tab-panel active" id="tab-character">
+  <div class="wrap">
+<header class="guide-header">
+    <div class="guide-eyebrow">Quick Guide · 퀵가이드</div>
+    <svg class="guide-emblem" viewBox="0 0 64 64"><polygon points="32,6 38,24 58,24 42,36 48,56 32,44 16,56 22,36 6,24 26,24" fill="none" stroke="#D4AF52" stroke-width="1.4"/><circle cx="32" cy="32" r="4"/></svg>
+    <h1 class="guide-title">캐릭터 만들기</h1>
+    <div class="guide-sub">CHARACTER CREATION</div>
+    <div class="guide-rule"><div class="guide-rule-line"></div><span class="guide-rule-gem">◆◆◆</span><div class="guide-rule-line"></div></div>
+  </header>
+
+  <p class="intro">빈 캐릭터 시트를 준비하세요. 영웅 한 명을 빚어낼 시간입니다. 모든 참여자가 함께 진행하면 처음부터 동료들 사이의 &lsquo;케미&rsquo;가 살아납니다.</p>
+
+  <div class="overview">
+    <div class="ov-chip"><span class="ov-num">1</span><span class="ov-label">정체성</span></div>
+    <div class="ov-chip"><span class="ov-num">2</span><span class="ov-label">주제</span></div>
+    <div class="ov-chip"><span class="ov-num">3</span><span class="ov-label">출신</span></div>
+    <div class="ov-chip"><span class="ov-num">4</span><span class="ov-label">직업</span></div>
+    <div class="ov-chip"><span class="ov-num">5</span><span class="ov-label">능력치</span></div>
+    <div class="ov-chip"><span class="ov-num">6</span><span class="ov-label">수치 계산</span></div>
+    <div class="ov-chip"><span class="ov-num">7</span><span class="ov-label">장비</span></div>
+    <div class="ov-chip"><span class="ov-num">8</span><span class="ov-label">묘사·이름</span></div>
+  </div>
+  <p class="dice-note">캐릭터는 보통 <strong style="color:var(--gold-light)">레벨 5</strong>에서 시작합니다 · 순서는 자유롭게 오갈 수 있어요</p>
+
+  <!-- STEP 1 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-badge">1</span>
+      <span class="step-title">정체성 결정<span class="en">Identity</span></span>
+    </div>
+    <p>캐릭터가 <strong>지금 자신을 어떻게 보는지</strong>를 한 문장으로 요약하세요. 이후 모든 선택에 영향을 주는 가장 중요한 첫 단계입니다.</p>
+    <p><em>예:</em> &ldquo;왕실 기사&rdquo;, &ldquo;기억을 잃은 노년의 마법사&rdquo;, &ldquo;자유를 위해 싸우는 격투가&rdquo;, &ldquo;애꾸눈 사무라이&rdquo;</p>
+    <div class="tip">정체성은 판정에서 <strong>발동</strong>해 유리함을 얻을 수 있으니, 플레이에 쓸모 있는 것을 고르세요. 모험을 거치며 바뀌어도 좋습니다 — 캐릭터가 성장했다는 뜻이니까요.</div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-badge">2</span>
+      <span class="step-title">주제 선택<span class="en">Theme</span></span>
+    </div>
+    <p>캐릭터의 행동과 선택을 지배하는 <strong>강한 이상이나 감정</strong>입니다. 캐릭터를 중심으로 한 장면에서 늘 핵심 초점이 됩니다.</p>
+    <p>대표적인 주제: <em>야망 · 분노 · 소속 · 의심 · 의무 · 죄책감 · 희망 · 정의 · 자비 · 복수</em></p>
+    <div class="tip">주제를 고를 때 캐릭터에게 어떻게 적용되는지 묘사해 보세요. 무엇을 향한 야망인가? 누구에게 진 의무인가? 누구를 향한 복수인가?</div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-badge">3</span>
+      <span class="step-title">출신 선택<span class="en">Origin</span></span>
+    </div>
+    <p>캐릭터가 <strong>비롯된 장소</strong>입니다. 세계 시트에 있는 장소를 고르거나 새로운 곳을 더할 수 있습니다.</p>
+    <p><em>예:</em> &ldquo;떠다니는 첨탑의 도시&rdquo;, &ldquo;잊혀진 사막 씨족&rdquo;, &ldquo;증기로 움직이는 항구 마을&rdquo;</p>
+    <div class="tip">출신은 캐릭터가 세계와 어떻게 연결되는지를 보여줍니다. 동료들의 출신과 엮으면 그룹의 공동 서사가 풍성해집니다.</div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-badge">4</span>
+      <span class="step-title">직업 선택<span class="en">Classes</span></span>
+    </div>
+    <p>레벨 5 캐릭터는 <strong>2~3개의 직업</strong>에 시작 5레벨을 나누어 투자합니다. 직업은 최소 2개, 최대 3개입니다.</p>
+    <p>각 직업에 레벨을 넣을 때마다 그 직업의 <strong>기술</strong>을 하나 얻고, 직업을 가진 것만으로 <strong>무료 혜택</strong>(전투 장비 장착, HP·MP·IP 소폭 증가 등)을 받습니다. 같은 혜택은 중첩됩니다.</p>
+    <div class="tip">직업은 &lsquo;현재의 능력&rsquo;일 뿐, 서사 속 역할을 가두지 않습니다. 기사가 전투 주문을 위해 마법 직업에 투자해도, 꼭 마법 학생일 필요는 없어요. <span class="pg-ref">— 직업별 상세는 본 룰북 176p~</span></div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-badge">5</span>
+      <span class="step-title">능력치 결정<span class="en">Attributes</span></span>
+    </div>
+    <p>네 가지 능력치의 <strong>기본 주사위 크기</strong>를 정합니다. 주사위가 클수록(d6→d12) 더 뛰어난 재능을 뜻합니다.</p>
+    <div class="attr-grid">
+      <div class="attr-item"><span class="attr-abbr">민첩 DEX</span><span class="attr-txt">정밀·협응·반사 신경</span></div>
+      <div class="attr-item"><span class="attr-abbr">통찰 INS</span><span class="attr-txt">관찰·이해·추론 능력</span></div>
+      <div class="attr-item"><span class="attr-abbr">근력 MIG</span><span class="attr-txt">힘·회복력·체력</span></div>
+      <div class="attr-item"><span class="attr-abbr">의지력 WLP</span><span class="attr-txt">정신력·집중·의지</span></div>
+    </div>
+    <p>아래 세 배열 중 하나를 골라 네 능력치에 배치하세요:</p>
+    <div class="arrays">
+      <div class="array-opt"><div class="array-name">균형</div><div class="array-dice">d8 d8 d8 d8</div><div class="array-desc">고른 만능형</div></div>
+      <div class="array-opt"><div class="array-name">평균</div><div class="array-dice">d10 d8 d8 d6</div><div class="array-desc">한쪽이 뛰어남</div></div>
+      <div class="array-opt"><div class="array-name">전문화</div><div class="array-dice">d10 d10 d6 d6</div><div class="array-desc">둘에 집중</div></div>
+    </div>
+    <div class="tip">능력치를 나눌 때 고른 직업과 기술을 함께 고려하세요. 근접 전사라면 민첩·근력을, 마법사라면 통찰·의지력을 키우는 식입니다.</div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-badge">6</span>
+      <span class="step-title">수치 계산<span class="en">Derived Stats</span></span>
+    </div>
+    <p>능력치를 정했다면 아래 공식으로 파생 수치를 계산합니다. (캐릭터는 최대 HP·MP를 채운 채 시작합니다.)</p>
+    <div class="formula">
+      <div class="formula-row"><span class="formula-name">최대 생명점 (HP)</span><span class="formula-val">총 레벨 + (기본 근력 주사위 × 5)</span></div>
+      <div class="formula-row"><span class="formula-name">위기 수치</span><span class="formula-val">최대 HP의 절반 (내림)</span></div>
+      <div class="formula-row"><span class="formula-name">최대 마력 (MP)</span><span class="formula-val">총 레벨 + (기본 의지력 주사위 × 5)</span></div>
+      <div class="formula-row"><span class="formula-name">방어</span><span class="formula-val">현재 민첩 주사위 크기</span></div>
+      <div class="formula-row"><span class="formula-name">마법 방어</span><span class="formula-val">현재 통찰 주사위 크기</span></div>
+      <div class="formula-row"><span class="formula-name">선제권 수정자</span><span class="formula-val">0 (갑옷·방패로 변동)</span></div>
+    </div>
+    <div class="tip">인벤토리 포인트(IP)는 직업 무료 혜택 등으로 정해집니다. 방어·마법 방어·선제권은 이후 착용하는 장비에 따라 달라집니다.</div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-badge">7</span>
+      <span class="step-title">장비 구매<span class="en">Equipment</span></span>
+    </div>
+    <p>시작 예산 <strong>500 제닛</strong>으로 장비를 구매하세요. 무기·갑옷·방패를 갖춰 영웅의 출발을 준비합니다.</p>
+    <p>구매 후 <strong>남은 금액</strong>에 <strong>2d6 × 10 제닛</strong>을 굴려 더한 값이 초기 저축금이 됩니다.</p>
+    <div class="tip">장비의 구체적인 목록과 가격은 본 룰북의 장비 챕터를 참고하세요. <span class="pg-ref">— 기본 장비 130p~</span></div>
+  </div>
+
+  <!-- STEP 8 -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-badge">8</span>
+      <span class="step-title">캐릭터 묘사<span class="en">Describe &amp; Name</span></span>
+    </div>
+    <p>마지막으로 캐릭터의 <strong>생김새와 분위기를 묘사</strong>하고, <strong>이름</strong>과 <strong>대명사</strong>를 정하세요.</p>
+    <p>이제 영웅이 완성됐습니다. 동료들과 인사를 나누고, 무엇이 여러분을 하나로 묶었는지 이야기해 보세요.</p>
+    <div class="tip">시간이나 아이디어가 부족하다면 본 룰북의 <strong>클래식 캐릭터</strong>(완성된 견본)를 골라 바로 시작할 수도 있습니다. <span class="pg-ref">— 클래식 캐릭터 172p</span></div>
+  </div>
+
+  <footer class="guide-footer">
+    <div class="ornament">◆ ◆ ◆</div>
+    파뷸라 울티마 퀵가이드 · 캐릭터 만들기<br>
+    자세한 규칙과 직업·장비 데이터는 코어 룰북을 참고하세요
+  </footer>
+  </div>
+</div>
+
+<div class="tab-panel" id="tab-combat">
+  <div class="wrap">
+<header class="guide-header">
+    <div class="guide-eyebrow">Quick Guide · 퀵가이드</div>
+    <svg class="guide-emblem" viewBox="0 0 64 64"><path d="M14 50 L40 24 M38 18 L46 10 L54 18 L46 26 Z M40 24 L46 26 M10 54 L18 46"/><line x1="44" y1="44" x2="54" y2="54"/><path d="M50 40 L54 44 L50 48"/></svg>
+    <h1 class="guide-title">전투</h1>
+    <div class="guide-sub">COMBAT</div>
+    <div class="guide-rule"><div class="guide-rule-line"></div><span class="guide-rule-gem">◆◆◆</span><div class="guide-rule-line"></div></div>
+  </header>
+
+  <p class="intro">이야기가 절정에 이르고 찰나의 순간이 운명을 가를 때, 전투가 시작됩니다. 파뷸라 울티마의 전투는 격자나 거리 측정 없이, <em>주고받는 행동의 연속</em>으로 빠르게 흘러갑니다.</p>
+
+  <!-- ════════ 1. 판정의 기본 ════════ -->
+  <h2 class="sec-title">먼저: 모든 것은 &lsquo;판정&rsquo;으로 통한다</h2>
+  <p class="lead-note">전투를 이해하려면 먼저 판정을 알아야 합니다. 파뷸라 울티마에서 불확실한 행동의 성패는 <strong style="color:var(--gold-light)">두 개의 능력치 주사위</strong>를 굴려 결정합니다.</p>
+  <div class="box gold">
+    <div class="box-label">판정의 3원칙</div>
+    <p>① <strong>항상 정확히 두 개의 주사위</strong>를 굴려 합산합니다. 예를 들어 <span class="formula-inline">민첩 + 통찰</span> 판정은 민첩 주사위와 통찰 주사위를 하나씩 굴립니다.</p>
+    <p>② 결과가 <strong>난이도(DL)</strong> 이상이면 성공입니다. 난이도는 GM이 정하거나(보통 7~13) 규칙이 지정합니다.</p>
+    <p>③ 두 주사위 중 <strong>높은 값을 HR</strong>(High Roll)이라 부릅니다. 피해 계산 등에 쓰이니 기억해 두세요.</p>
+  </div>
+  <div class="box crimson">
+    <div class="box-label">대성공과 실패</div>
+    <p>🌟 <strong>대성공:</strong> 두 주사위가 <strong>똑같은 값(6 이상)</strong>이면 방어 수치와 무관하게 자동 명중하며, 추가 효과나 &lsquo;기회&rsquo;를 만들어냅니다.</p>
+    <p>💀 <strong>실패:</strong> 두 주사위가 모두 1이면 자동 실패이며, 상황이 극적으로 나빠집니다.</p>
+  </div>
+
+  <!-- ════════ 2. 전투의 흐름 ════════ -->
+  <h2 class="sec-title">전투의 흐름</h2>
+  <p class="lead-note">전투는 다음 순서로 진행됩니다. 핵심은 <strong style="color:var(--gold-light)">선제권으로 주도권을 정하고, 양측이 번갈아 한 명씩 행동</strong>한다는 점입니다.</p>
+  <div class="flow">
+    <div class="flow-step"><span class="flow-badge">1</span><div class="flow-body"><h4>참여자 결정</h4><p>누가 전투에 적극 참여할지 정합니다. 나머지는 <strong>엑스트라</strong>로 배경에 머뭅니다.</p></div></div>
+    <div class="flow-step"><span class="flow-badge">2</span><div class="flow-body"><h4>목표 선언</h4><p>각자 이 전투에서 <strong>무엇을 원하는지</strong> 밝힙니다. 장착한 장비도 이때 선언합니다. (GM은 적의 목표를 숨겨도 됩니다.)</p></div></div>
+    <div class="flow-step"><span class="flow-badge">3</span><div class="flow-body"><h4>선제권 판정</h4><p>플레이어 측이 <span class="formula-inline">민첩 + 통찰</span> <strong>집단 판정</strong>을 굴립니다. 난이도는 적 중 가장 높은 선제권 수치입니다.</p></div></div>
+    <div class="flow-step"><span class="flow-badge">4</span><div class="flow-body"><h4>선제권 적용</h4><p>성공하면 매 라운드 <strong>아군이 먼저</strong>, 실패하면 <strong>적이 먼저</strong> 시작합니다.</p></div></div>
+    <div class="flow-step"><span class="flow-badge">5</span><div class="flow-body"><h4>라운드 진행</h4><p>선제권을 가진 측부터 <strong>한 명씩 번갈아</strong> 턴을 가집니다. 각 턴은 <strong>행동 하나</strong>. 턴을 그냥 넘길 수는 없습니다. 수가 많은 측은 라운드 끝에 남은 턴을 몰아서 가집니다.</p></div></div>
+    <div class="flow-step"><span class="flow-badge">6</span><div class="flow-body"><h4>라운드 종료</h4><p>모두가 행동을 마치면 라운드 종료. 전투가 이어지면 <strong>5단계로 돌아가</strong> 새 라운드를 시작합니다.</p></div></div>
+    <div class="flow-step"><span class="flow-badge">7</span><div class="flow-body"><h4>전투 종료</h4><p>한 측이 목표를 이루거나, 더 싸울 수 없거나, 타협이 이뤄지면 GM이 전투의 끝을 선언합니다.</p></div></div>
+  </div>
+  <div class="tip">파뷸라 울티마는 <strong>위치·거리를 추상적으로</strong> 다룹니다. "몇 걸음 떨어졌나"는 중요하지 않아요. 중요한 건 "누가 너를 막으려 하는가"입니다. 멋지게 묘사하고 바로 주사위를 굴리세요.</div>
+
+  <!-- ════════ 3. 내 턴에 할 수 있는 행동 ════════ -->
+  <h2 class="sec-title">내 턴에 할 수 있는 행동</h2>
+  <p class="lead-note">자기 턴이 오면 아래 <strong style="color:var(--gold-light)">행동 하나</strong>를 선택합니다. 그 외에 판정이 필요 없는 사소한 동작(아이템 줍기, 문 열기 등 &lsquo;부수 활동&rsquo;)은 자유롭게 곁들일 수 있습니다.</p>
+  <div class="actions">
+    <div class="act"><div class="act-head"><span class="act-icon">⚔</span><span class="act-name">공격</span></div><div class="act-desc">근접 또는 원거리 공격을 합니다. (아래에서 자세히)</div></div>
+    <div class="act"><div class="act-head"><span class="act-icon">✨</span><span class="act-name">주문</span></div><div class="act-desc">배운 주문 하나를 시전합니다. 마력(MP)을 소비합니다.</div></div>
+    <div class="act"><div class="act-head"><span class="act-icon">🛡</span><span class="act-name">방어</span></div><div class="act-desc">다음 턴까지 <b style="color:var(--text-primary)">모든 피해에 저항</b>, 대립 판정 +2, 동료를 감싸 근접 공격을 대신 막을 수 있음. (턴당 1회)</div></div>
+    <div class="act"><div class="act-head"><span class="act-icon">👁</span><span class="act-name">방해</span></div><div class="act-desc">난이도 10 판정 성공 시 상대에게 멍함·동요·느림·약화 중 하나를 겁니다.</div></div>
+    <div class="act"><div class="act-head"><span class="act-icon">🎯</span><span class="act-name">목표</span></div><div class="act-desc">전투 속 목표(탈출·탈취 등)를 위해 행동합니다. 복잡하면 시계를 씁니다.</div></div>
+    <div class="act"><div class="act-head"><span class="act-icon">🧪</span><span class="act-name">인벤토리</span></div><div class="act-desc">IP를 소비해 소모품을 즉석에서 만들어 사용합니다.</div></div>
+    <div class="act"><div class="act-head"><span class="act-icon">🎒</span><span class="act-name">장비</span></div><div class="act-desc">장착 아이템을 교체합니다. (갑옷은 제외 — 여러 턴 필요)</div></div>
+    <div class="act"><div class="act-head"><span class="act-icon">🔍</span><span class="act-name">연구</span></div><div class="act-desc"><span class="formula-inline">통찰 + 통찰</span>로 적이나 대상의 정보를 알아냅니다.</div></div>
+    <div class="act"><div class="act-head"><span class="act-icon">⚙</span><span class="act-name">기술</span></div><div class="act-desc">행동을 요구하는 직업 기술을 사용합니다.</div></div>
+    <div class="act"><div class="act-head"><span class="act-icon">💬</span><span class="act-name">기타</span></div><div class="act-desc">위에 없는 행동. GM과 방법·효과를 협의합니다.</div></div>
+  </div>
+
+  <!-- ════════ 4. 공격하는 법 ════════ -->
+  <h2 class="sec-title">공격하는 법</h2>
+  <p class="lead-note">가장 자주 쓰는 행동입니다. 다음 네 단계로 해결됩니다.</p>
+  <div class="seq">
+    <div class="seq-item"><h4>대상 선택</h4><p>볼 수 있고 무기가 닿는 적을 고릅니다. (예: 비행 중인 적에겐 근접 공격이 닿지 않습니다.)</p></div>
+    <div class="seq-item"><h4>명중 판정</h4><p>무기에 표시된 공식으로 판정합니다. <strong>난이도 = 대상의 방어 수치</strong>. 성공하면 명중, 실패하면 빗나감. <strong>대성공은 자동 명중, 모두 1이면 자동 빗나감.</strong></p></div>
+    <div class="seq-item"><h4>피해 계산</h4><p>명중 시 무기 공식대로 피해를 냅니다. 보통 <span class="formula-inline">HR + 무기 위력</span> — 즉 <strong>명중 판정의 높은 주사위(HR)</strong>에 무기 고정값을 더합니다.</p></div>
+    <div class="seq-item"><h4>HP 감소</h4><p>대상은 피해만큼 HP를 잃습니다. 단, 아래 <strong>피해 친화성</strong>에 따라 달라집니다.</p></div>
+  </div>
+  <div class="box gold">
+    <div class="box-label">예시</div>
+    <p>기사 몽블랑이 해골을 전쟁도끼로 내려칩니다. 명중 판정 <span class="formula-inline">근력 + 근력</span> → d10 두 개에서 <strong>6과 9</strong>가 나와 합계 15, 해골의 방어 11을 넘겨 <strong>명중</strong>! 전쟁도끼 피해는 <span class="formula-inline">HR + 14</span>이고 높은 주사위가 9였으니 → <strong>총 23 피해</strong>.</p>
+  </div>
+
+  <!-- ════════ 5. 피해 유형과 친화성 ════════ -->
+  <h2 class="sec-title">피해 유형과 친화성</h2>
+  <p class="lead-note">피해에는 종류가 있습니다 — <strong>물리 · 화염 · 빙결 · 번개 · 대지 · 바람 · 빛 · 어둠 · 독</strong>. 대상이 특정 유형에 어떤 &lsquo;친화성&rsquo;을 가지느냐에 따라 실제 피해가 달라집니다.</p>
+  <div class="affinity">
+    <div class="aff vuln"><div class="aff-name">취약 ▲</div><div class="aff-desc">받는 HP 피해 <b>2배</b> (예: 언데드는 빛에 취약)</div></div>
+    <div class="aff resist"><div class="aff-name">저항 ▽</div><div class="aff-desc">받는 HP 피해 <b>절반</b></div></div>
+    <div class="aff immune"><div class="aff-name">면역 ○</div><div class="aff-desc">HP를 <b>잃지 않음</b></div></div>
+    <div class="aff absorb"><div class="aff-name">흡수 ◆</div><div class="aff-desc">피해만큼 오히려 <b>HP 회복</b></div></div>
+  </div>
+  <div class="tip">적의 약점을 노리는 것이 전투의 핵심 전략입니다. 잘 모르겠다면 <strong>🔍 연구</strong> 행동으로 적의 친화성을 알아낼 수 있어요.</div>
+
+  <!-- ════════ 6. 상태 이상 ════════ -->
+  <h2 class="sec-title">상태 이상</h2>
+  <p class="lead-note">공격이나 방해로 적(또는 나)에게 <strong style="color:var(--crimson-light)">상태 이상</strong>을 걸 수 있습니다. 각 상태는 능력치 주사위를 <strong>한 단계 떨어뜨립니다</strong>(예: d10→d8). 같은 능력치에 겹치면 중첩되지만 d6 아래로는 안 내려갑니다.</p>
+  <div class="status-grid">
+    <div class="stat-item"><span class="stat-name">멍함</span><span class="stat-eff"><b>통찰</b> ▼</span></div>
+    <div class="stat-item"><span class="stat-name">동요</span><span class="stat-eff"><b>의지력</b> ▼</span></div>
+    <div class="stat-item"><span class="stat-name">느림</span><span class="stat-eff"><b>민첩</b> ▼</span></div>
+    <div class="stat-item"><span class="stat-name">약화</span><span class="stat-eff"><b>근력</b> ▼</span></div>
+    <div class="stat-item"><span class="stat-name">격분</span><span class="stat-eff"><b>민첩 + 통찰</b> ▼▼</span></div>
+    <div class="stat-item"><span class="stat-name">중독</span><span class="stat-eff"><b>근력 + 의지력</b> ▼▼</span></div>
+  </div>
+  <div class="tip">상태 이상은 <strong>휴식</strong>이나 특정 주문·기술·아이템으로 회복합니다. 해당 상태에 면역이 되면 즉시 낫습니다.</div>
+
+  <!-- ════════ HP·위기·쓰러짐 ════════ -->
+  <h2 class="sec-title">생명점, 위기, 그리고 쓰러질 때</h2>
+  <p class="lead-note">생명점(HP)은 단순한 체력이 아니라 <strong style="color:var(--gold-light)">전투를 버텨내는 의지의 방패</strong>입니다. HP가 깎이는 건 멍과 찰과상일 뿐, 0이 되는 순간이 진짜 결정타입니다.</p>
+  <div class="box crimson">
+    <div class="box-label">위기 — Crisis</div>
+    <p>현재 HP가 <strong>최대 HP의 절반 이하</strong>로 떨어지면 <strong>위기 상태</strong>가 됩니다. (예: 최대 60이면 30 이하)</p>
+    <p>수많은 직업 기술이 &lsquo;위기일 때&rsquo; 더 강해지도록 설계돼 있어요. 위기는 위험 신호인 동시에 <strong>역전의 발판</strong>입니다 — JRPG의 빈사 상태 역전을 떠올리세요.</p>
+  </div>
+  <div class="box gold">
+    <div class="box-label">HP가 0이 되면 — 희생 또는 항복</div>
+    <p>플레이어 캐릭터는 즉사하지 않습니다. 대신 <strong>둘 중 하나</strong>를 선택합니다:</p>
+    <p>⚜ <strong>희생:</strong> 목숨을 바쳐 불가능해 보이는 일을 이뤄냅니다. (씬에 악당이 있을 것 등 조건 2가지 충족 시) 영웅적인 최후를 GM과 함께 서술하세요.</p>
+    <p>🏳 <strong>항복:</strong> 즉시 <strong>파뷸라 포인트 2개</strong>를 얻고 쓰러집니다. 다음 씬 시작 시 의식을 회복하며 위기 수치만큼 HP가 돌아옵니다. GM은 처치 대신 서사적 대가를 부과합니다.</p>
+  </div>
+
+  <!-- ════════ 파뷸라 포인트 ════════ -->
+  <h2 class="sec-title">운명을 바꾸는 힘 — 파뷸라 포인트</h2>
+  <p class="lead-note">전투에서 가장 강력한 자원입니다. 영웅이 운명을 거스르게 해주죠. 캐릭터는 <strong style="color:var(--gold-light)">3개</strong>로 시작합니다.</p>
+  <div class="affinity">
+    <div class="aff resist"><div class="aff-name">획득 ＋</div><div class="aff-desc">판정에 <b style="color:var(--text-primary)">실패</b>할 때 / 악당이 등장할 때 / 항복할 때(2개) / 세션 시작 시 0개면 1개</div></div>
+    <div class="aff immune"><div class="aff-name">소비 －</div><div class="aff-desc"><b style="color:var(--text-primary)">특기 발동</b>(주사위 재굴림) / <b style="color:var(--text-primary)">유대 발동</b>(아래) / 이야기 변경 / 일부 기술</div></div>
+  </div>
+  <div class="box arcane">
+    <div class="box-label">유대 발동 — 전투의 반전 카드</div>
+    <p>판정을 굴린 뒤, <strong>파뷸라 포인트 1개</strong>를 소비하고 유대 하나를 발동하면 그 <strong>유대의 강도(1~3)</strong>를 결과에 더할 수 있습니다. 판정당 한 번.</p>
+    <p>아슬아슬하게 빗나간 공격을, 동료를 향한 사랑이나 적을 향한 분노로 명중시키는 순간 — 이것이 파뷸라 울티마 전투의 백미입니다. <em>단, 의미가 있을 때만 발동하세요.</em></p>
+  </div>
+
+  <!-- ════════ 전투 속 시계 ════════ -->
+  <h2 class="sec-title">전투 속 시계</h2>
+  <p class="lead-note">단순히 적을 쓰러뜨리는 것 말고도, 전투에는 <strong style="color:var(--gold-light)">시계</strong>로 추적하는 다양한 목표가 있습니다. 시계는 칸으로 나뉜 원이고, 다 채우면 사건이 일어납니다.</p>
+  <div class="actions">
+    <div class="act"><div class="act-head"><span class="act-icon">🎯</span><span class="act-name">목표 시계</span></div><div class="act-desc">🎯 목표 행동에 성공할 때마다 칸을 채웁니다. 다 채우면 탈출·의식 저지·설득 등 목표 달성!</div></div>
+    <div class="act"><div class="act-head"><span class="act-icon">⚔</span><span class="act-name">결투 시계</span></div><div class="act-desc">참가자마다 시계를 두고, 먼저 자기 시계를 채우는 쪽이 결투에서 승리합니다.</div></div>
+    <div class="act"><div class="act-head"><span class="act-icon">⏳</span><span class="act-name">시간 추적기</span></div><div class="act-desc">"비행선이 4칸 뒤 가동" 같은 압박. 영웅들에게 긴장과 자원 관리의 묘미를 줍니다.</div></div>
+    <div class="act"><div class="act-head"><span class="act-icon">🔀</span><span class="act-name">분리 전투</span></div><div class="act-desc">멀리 떨어진 장소가 얽히면, 선제권 순서로 장소를 전환하며 진행합니다.</div></div>
+  </div>
+  <div class="tip">GM은 <strong>중요한 사건</strong>이 일어나면 판정과 무관하게 칸을 1~2개 채우거나 지울 수 있습니다. 시계는 "이 전투가 단순한 두들겨 패기가 아니라는 것"을 보여주는 도구예요.</div>
+
+  <!-- ════════ 휴식 ════════ -->
+  <h2 class="sec-title">전투가 끝난 뒤 — 휴식</h2>
+  <p class="lead-note">영웅적인 삶은 대가를 치릅니다. 안전한 곳(여관, 마법 텐트, 성역 등)에서 휴식하면 회복할 수 있어요.</p>
+  <div class="box gold">
+    <div class="box-label">휴식의 효과</div>
+    <p>✦ <strong>모든 HP와 MP를 완전히 회복</strong>합니다.</p>
+    <p>✦ <strong>모든 상태 이상에서 회복</strong>합니다.</p>
+    <p>보통 4~6시간의 비활동이 필요하며, 이때 동료들과 나누는 조용한 <strong>휴식 씬</strong>은 유대를 다지는 소중한 시간이 됩니다.</p>
+  </div>
+
+  <!-- ════════ 7. 기억할 것 ════════ -->
+  <h2 class="sec-title">전투 중 기억하면 좋은 것</h2>
+  <div class="box arcane">
+    <div class="box-label">한눈 요약</div>
+    <p>• 내 턴엔 <strong>행동 하나</strong> + 사소한 부수 활동들</p>
+    <p>• 공격 = <strong>명중 판정(난이도=적 방어)</strong> → 맞으면 <strong>HR + 무기 위력</strong> 피해</p>
+    <p>• <strong>방어</strong> 행동으로 동료를 감싸 지킬 수 있다 (탱커의 핵심)</p>
+    <p>• <strong>파뷸라 포인트</strong>로 주사위를 다시 굴리거나 위기를 넘길 수 있다</p>
+    <p>• 적의 <strong>약점 속성</strong>을 노리고, <strong>상태 이상</strong>으로 약화시켜라</p>
+    <p>• 위치·거리에 얽매이지 말고 <strong>멋진 묘사</strong>로 풀어가라</p>
+  </div>
+
+  <footer class="guide-footer">
+    <div class="ornament">◆ ◆ ◆</div>
+    파뷸라 울티마 퀵가이드 · 전투<br>
+    주문·기술·장비의 상세 수치는 코어 룰북을 참고하세요
+  </footer>
+  </div>
+</div>
+
+<div class="tab-panel" id="tab-adventure">
+  <div class="wrap">
+<header class="guide-header">
+    <div class="guide-eyebrow">Quick Guide · 퀵가이드</div>
+    <svg class="guide-emblem" viewBox="0 0 64 64"><circle cx="32" cy="32" r="22"/><polygon points="32,14 37,30 32,28 27,30"/><polygon points="32,50 27,34 32,36 37,34"/><circle cx="32" cy="32" r="3" fill="#D4AF52"/></svg>
+    <h1 class="guide-title">어드벤처</h1>
+    <div class="guide-sub">ADVENTURE &amp; EXPLORATION</div>
+    <div class="guide-rule"><div class="guide-rule-line"></div><span class="guide-rule-gem">◆◆◆</span><div class="guide-rule-line"></div></div>
+  </header>
+
+  <p class="intro">전투만이 모험은 아닙니다. 세계를 탐험하고, 사람들과 어울리고, 위험을 헤쳐 목적지에 닿는 모든 순간 — 그 일상의 규칙들을 한자리에 모았습니다.</p>
+
+  <!-- ════════ 씬 ════════ -->
+  <h2 class="sec-title"><span class="ico">🎬</span>게임은 &lsquo;씬&rsquo;으로 흘러간다</h2>
+  <p class="lead-note">파뷸라 울티마는 영화나 만화처럼 <strong style="color:var(--gold-light)">씬</strong> 단위로 진행됩니다. 씬은 하나의 장면이자 무대이며, 시작과 끝을 GM이 선언합니다.</p>
+  <div class="flow">
+    <div class="flow-step"><span class="flow-badge">1</span><div class="flow-body"><h4>씬 도입</h4><p>GM이 누가·어디서·무엇이 있는지 한두 문장으로 묘사합니다.</p></div></div>
+    <div class="flow-step"><span class="flow-badge">2</span><div class="flow-body"><h4>전개</h4><p>플레이어들이 행동하고 결정하며 이야기를 밀고 나갑니다. GM은 환경과 NPC의 반응을 묘사합니다.</p></div></div>
+    <div class="flow-step"><span class="flow-badge">3</span><div class="flow-body"><h4>판정</h4><p>결과가 불확실한 행동은 주사위로 결정합니다. (아래 참조)</p></div></div>
+    <div class="flow-step"><span class="flow-badge">4</span><div class="flow-body"><h4>씬 종료</h4><p>상황이 해결되거나 다른 시공간으로 넘어가면 GM이 씬을 닫습니다.</p></div></div>
+  </div>
+  <p class="lead-note">씬에는 세 가지 종류가 있습니다:</p>
+  <div class="scene-types">
+    <div class="scene-card"><span class="ic">⚔</span><h4>전투 씬</h4><p>목표가 충돌해 카메라가 줌인되는 순간. (전투 가이드 참조)</p></div>
+    <div class="scene-card"><span class="ic">🍃</span><h4>막간 씬</h4><p>여행·휴식처럼 느린 흐름. 짧은 활동 장면의 연속으로 요약합니다.</p></div>
+    <div class="scene-card"><span class="ic">🎭</span><h4>GM 씬</h4><p>PC 없이 보여주는 컷씬. 악당의 음모나 다가올 위협을 예고합니다.</p></div>
+  </div>
+  <div class="tip">여러 씬이 모이면 한 번의 플레이인 <strong>세션</strong>(약 4시간)이 되고, 여러 세션이 모여 큰 이야기인 <strong>캠페인</strong>이 됩니다.</div>
+
+  <!-- ════════ 자주 쓰는 판정 ════════ -->
+  <h2 class="sec-title"><span class="ico">🎲</span>자주 쓰는 판정</h2>
+  <p class="lead-note">탐험 중 불확실한 행동은 <strong style="color:var(--gold-light)">두 능력치 주사위</strong>를 굴려 GM이 정한 난이도(보통 7~13)와 비교합니다. 흔한 상황별 추천 판정입니다:</p>
+  <table class="check-table">
+    <thead><tr><th>상황</th><th>판정</th></tr></thead>
+    <tbody>
+      <tr><td>조용히 이동·숨기·눈에 안 띄게</td><td class="dice">민첩+민첩</td></tr>
+      <tr><td>함정 회피·붕괴에서 탈출</td><td class="dice">민첩+통찰</td></tr>
+      <tr><td>움직임을 예측해 기습</td><td class="dice">민첩+통찰</td></tr>
+      <tr><td>장인 작업·수리</td><td class="dice">민첩+통찰</td></tr>
+      <tr><td>우아하게 움직여 주목 끌기</td><td class="dice">민첩+의지력</td></tr>
+      <tr><td>살펴보거나 조사하기</td><td class="dice">통찰+통찰</td></tr>
+      <tr><td>유용한 정보 떠올리기</td><td class="dice">통찰+통찰</td></tr>
+      <tr><td>대화로 정보 얻기</td><td class="dice">통찰+의지력</td></tr>
+      <tr><td>권위·외교로 설득</td><td class="dice">통찰+의지력</td></tr>
+      <tr><td>철창 들기·석상 밀기 등 힘쓰기</td><td class="dice">근력+근력</td></tr>
+      <tr><td>고통·피로 견디기</td><td class="dice">근력+의지력</td></tr>
+      <tr><td>힘으로 위협하기</td><td class="dice">근력+의지력</td></tr>
+    </tbody>
+  </table>
+  <div class="tip">PC는 영웅입니다. <strong>반대 세력이나 위협이 없으면 그냥 성공</strong>합니다. 선술집을 찾는 데는 주사위가 필요 없지만, 산적단을 피해 도착하는 데는 필요하죠.</div>
+  <div class="box gold">
+    <div class="box-label">개방 판정 — 난이도가 없는 판정</div>
+    <p>때로는 성공/실패가 아니라 <strong>얼마나 잘 해냈는가</strong>가 중요합니다. 이때는 난이도 없이 굴리고, 결과 수치 자체로 성과를 판단합니다. 조사·지식 회상 등에 자주 써요.</p>
+    <p><strong>7+</strong> 약간의 재능이면 가능 · <strong>10+</strong> 유능한 수준 · <strong>13+</strong> 전문가·천재 · <strong>16+</strong> 역사에 남을 결과</p>
+  </div>
+
+  <!-- ════════ 시계 ════════ -->
+  <h2 class="sec-title"><span class="ico">🕐</span>시계 — 복잡한 일을 추적하기</h2>
+  <p class="lead-note">하나의 판정으로 끝나지 않는 복잡한 활동이나 다가오는 위험은 <strong style="color:var(--gold-light)">시계</strong>로 추적합니다. 칸으로 나뉜 원이며, 보통 4~12칸입니다.</p>
+  <div class="box gold">
+    <div class="box-label">시계는 이렇게 작동합니다</div>
+    <p>• 진행이 있을 때마다 <strong>칸을 채웁니다</strong>. 다 차면 정해진 사건이 일어나죠.</p>
+    <p>• GM은 중요한 사건이 생기면 판정과 무관하게 <strong>1~2칸</strong>을 채우거나 지울 수 있습니다.</p>
+    <p>• 항상 <strong>모두에게 공개</strong>합니다. 남은 칸이 보이면 긴장감이 살아납니다.</p>
+  </div>
+  <p class="lead-note">예를 들어 — 잠입 중 실패하면 &lsquo;경계 발령&rsquo; 시계가 차고, 천장을 무너뜨려 거대 몬스터를 잡으려 할 땐 &lsquo;지지대 약화&rsquo; 시계를 채우며, 악당의 의식을 막을 &lsquo;마법 대재앙&rsquo; 시계가 카운트다운이 됩니다.</p>
+
+  <!-- ════════ 여정과 여행 ════════ -->
+  <h2 class="sec-title"><span class="ico">🗺</span>여정과 여행</h2>
+  <p class="lead-note">세계 지도를 가로지르는 이동은 <strong style="color:var(--gold-light)">여행일</strong> 단위로 처리합니다. 각 여행일마다 다음을 반복합니다:</p>
+  <div class="flow">
+    <div class="flow-step"><span class="flow-badge">1</span><div class="flow-body"><h4>위협 수준 결정</h4><p>GM이 통과 지역의 위협 수준을 정합니다. (여러 곳이면 가장 높은 것)</p></div></div>
+    <div class="flow-step"><span class="flow-badge">2</span><div class="flow-body"><h4>여행 굴림</h4><p>위협 수준에 맞는 주사위를 굴립니다. <strong>6 이상이면 위험</strong>과 마주치고, <strong>1이면 뜻밖의 발견</strong>을 합니다!</p></div></div>
+    <div class="flow-step"><span class="flow-badge">3</span><div class="flow-body"><h4>진행</h4><p>위험에 멈추지 않으면 다음 여행일로 가거나 목적지에 도착합니다.</p></div></div>
+  </div>
+  <table class="threat-table">
+    <thead><tr><th>지역</th><th>위협</th><th>주사위</th></tr></thead>
+    <tbody>
+      <tr><td>마을·도시·경비 구역 내</td><td>최소</td><td class="dl">d6</td></tr>
+      <tr><td>평원·순찰 도로·시골</td><td>낮음</td><td class="dl">d8</td></tr>
+      <tr><td>숲·언덕·강</td><td>보통</td><td class="dl">d10</td></tr>
+      <tr><td>광활한 숲·산악·공해·늪</td><td>높음</td><td class="dl">d12</td></tr>
+      <tr><td>사막·황무지·밀림·화산</td><td>매우 높음</td><td class="dl">d20</td></tr>
+    </tbody>
+  </table>
+  <div class="tip">적의 통제 하에 있는 구역은 한 단계 더 위험하게 취급합니다. 여행일은 항상 올림합니다(2.5일 → 3일).</div>
+
+  <!-- ════════ 발견과 던전 ════════ -->
+  <h2 class="sec-title"><span class="ico">🏛</span>발견과 던전</h2>
+  <div class="mini-grid">
+    <div class="mini"><h4>발견은 늘 좋은 것</h4><p>고대 폐허, 숨은 마을, 귀한 정보나 아이템 — 발견은 드물게 일어나니 항상 독특하고 보람 있게 만듭니다. 위험한 곳이라도 보상이 충분해야 합니다.</p></div>
+    <div class="mini"><h4>던전 = 탐험할 장소</h4><p>산적 소굴, 마녀의 성, 골렘이 지키는 수로… 배치보다 <strong style="color:var(--gold-light)">왜 거기 있고 무엇을 찾는지</strong>가 더 중요합니다.</p></div>
+  </div>
+  <p class="lead-note">던전은 규모에 따라 세 가지 방식으로 탐험합니다:</p>
+  <div class="scene-types">
+    <div class="scene-card"><span class="ic">🎯</span><h4>던전 씬</h4><p>핵심 순간들의 연속으로. 깊은 곳의 목표만 중요할 때.</p></div>
+    <div class="scene-card"><span class="ic">🔍</span><h4>상세 탐험</h4><p>구석구석. 배치와 세부가 이야기를 전할 때만.</p></div>
+    <div class="scene-card"><span class="ic">🍃</span><h4>막간 탐험</h4><p>막간 씬으로. 집단 판정 한 번으로 통과.</p></div>
+  </div>
+
+  <!-- ════════ 인벤토리 포인트 ════════ -->
+  <h2 class="sec-title"><span class="ico">🎒</span>인벤토리 포인트와 장비</h2>
+  <p class="lead-note">자질구레한 소지품은 일일이 세지 않습니다. 대신 <strong style="color:var(--gold-light)">인벤토리 포인트(IP)</strong>라는 추상적 비축량(보통 최대 6)으로 소모품을 표현합니다.</p>
+  <div class="ip-grid">
+    <div class="ip-item"><span class="ip-cost">3 IP</span><span class="ip-eff"><b>치료약</b> — HP 50 회복</span></div>
+    <div class="ip-item"><span class="ip-cost">3 IP</span><span class="ip-eff"><b>포션 엘릭서</b> — MP 50 회복</span></div>
+    <div class="ip-item"><span class="ip-cost">2 IP</span><span class="ip-eff"><b>강장제</b> — 상태 이상 하나 회복</span></div>
+    <div class="ip-item"><span class="ip-cost">2 IP</span><span class="ip-eff"><b>원소 파편</b> — 원하는 속성 피해 10</span></div>
+    <div class="ip-item"><span class="ip-cost">4 IP</span><span class="ip-eff"><b>마법 텐트</b> — 야외에서 그룹 휴식</span></div>
+  </div>
+  <div class="box emerald">
+    <div class="box-label">IP 사용 원칙</div>
+    <p>• 만든 즉시 사용해야 하며 <strong>아껴둘 수 없습니다</strong>.</p>
+    <p>• 마을·상점에서 <strong>1 IP당 10제닛</strong>으로 충전합니다.</p>
+    <p>• 캐릭터끼리 IP를 주고받을 수 없습니다.</p>
+    <p>• 정체성에 맞는 모험 장비(횃불·밧줄 등)는 늘 가지고 있다고 봅니다. 특이한 물건은 GM 재량으로 IP 2~4개를 써서 &lsquo;기적적으로&rsquo; 꺼낼 수 있어요.</p>
+  </div>
+
+  <!-- ════════ 경제 ════════ -->
+  <h2 class="sec-title"><span class="ico">💰</span>경제 — 제닛과 장비 슬롯</h2>
+  <p class="lead-note">모든 세계의 공통 화폐는 <strong style="color:var(--gold-light)">제닛(z)</strong>입니다. 기준 물가는 — 식사 한 끼 <strong>5z</strong>, 여관 하룻밤 <strong>10z</strong>, 청동 방패 <strong>100z</strong> 정도예요.</p>
+  <div class="box gold">
+    <div class="box-label">장비 슬롯</div>
+    <p>캐릭터가 몸에 장착할 수 있는 자리는 정해져 있습니다: <strong>갑옷 1</strong> · <strong>주 손 1</strong>(양손 무기는 부 손까지 차지) · <strong>부 손 1</strong>(한손 무기 또는 방패) · <strong>악세서리 1</strong>.</p>
+    <p>장착하지 않은 아이템은 <strong>가방</strong>에 넣습니다(개수 제한 없음). 단, <strong>장착해야만 효과가 적용</strong>됩니다. 가방 속 아이템은 그냥 짐일 뿐이에요.</p>
+  </div>
+  <div class="tip">기본 무기·갑옷·방패는 대부분의 마을에서 살 수 있지만, 희귀 아이템은 특별한 상점이나 위험한 폐허 깊은 곳에 있습니다. <span class="pg-ref">— 아이템 가격·목록은 본 룰북 경제 챕터 참조</span></div>
+
+  <!-- ════════ 의식과 프로젝트 ════════ -->
+  <h2 class="sec-title"><span class="ico">✨</span>의식과 프로젝트</h2>
+  <p class="lead-note">시간과 노력을 들여 전투 밖에서 세계에 영향을 주는 두 가지 큰 수단입니다.</p>
+  <div class="box arcane">
+    <div class="box-label">의식 — 시간이 드는 강력한 마법</div>
+    <p>특정 직업·기술이 있으면 분과별 <strong>의식 마법</strong>을 쓸 수 있습니다. 보통 <span class="formula-inline">통찰 + 의지력</span> 마법 판정으로 시전해요. 물 위를 걷거나, 폭풍을 부르거나, 마법을 감지하는 등 <strong>서사적으로 거대한 효과</strong>가 가능합니다.</p>
+    <p><em>단, 의식은 직접 피해·상태 이상 부여/제거·HP/MP 증감·기존 주문 복제는 할 수 없습니다.</em></p>
+  </div>
+  <div class="box gold">
+    <div class="box-label">프로젝트 — 무언가를 만들어내기</div>
+    <p>팅커러 직업은 <strong>프로젝트</strong>로 발명품을 만듭니다. 사랑의 묘약부터 비행선까지요. 발명품을 묘사하고 → 비용을 정하고 → (선택)결함을 협상해 25% 절감하고 → <strong>진행도</strong>를 쌓아 완성합니다.</p>
+    <p>진행도는 <strong>재료비 100제닛당 1</strong> 필요하며, 매일 참여한 PC당 +1(팅커러면 추가 +1)씩 쌓입니다. <span class="pg-ref">— 상세 비용표는 본 룰북 프로젝트 챕터 참조</span></p>
+  </div>
+
+  <!-- ════════ 휴식 ════════ -->
+  <h2 class="sec-title"><span class="ico">🏕</span>휴식 — 다시 일어서기</h2>
+  <p class="lead-note">영웅적인 삶은 대가를 치릅니다. 안전한 곳에서 휴식하면 회복할 수 있어요.</p>
+  <div class="mini-grid">
+    <div class="mini"><h4>어디서 쉬나</h4><p>정착지에선 여관(유료)이나 우호적 환대. 야외에선 마법 텐트(IP 4), 환대, 또는 공격 위험 없는 안전한 장소.</p></div>
+    <div class="mini"><h4>회복 효과</h4><p>HP·MP를 <strong style="color:var(--gold-light)">완전히 회복</strong>하고 <strong style="color:var(--gold-light)">모든 상태 이상</strong>이 낫습니다. 보통 4~6시간 필요.</p></div>
+  </div>
+  <div class="tip">휴식할 때 동료들과 나누는 조용한 <strong>휴식 씬</strong>은 유대를 다지는 소중한 롤플레잉 시간입니다. 단, 안전하지 않은 곳에서의 휴식은 GM이 시계로 위협을 더할 수 있어요.</div>
+
+  <!-- ════════ 한눈 요약 ════════ -->
+  <h2 class="sec-title"><span class="ico">📖</span>한눈 요약</h2>
+  <div class="box arcane">
+    <div class="box-label">어드벤처의 리듬</div>
+    <p>• 게임은 <strong>씬</strong>으로 흐른다 — 전투 / 막간 / GM 씬</p>
+    <p>• 위협이 없으면 <strong>그냥 성공</strong>, 불확실하면 두 능력치로 판정</p>
+    <p>• 복잡한 일·다가오는 위험은 <strong>시계</strong>로 추적</p>
+    <p>• 이동은 <strong>여행일</strong>마다 굴림 — 6+위험, 1 발견</p>
+    <p>• 소모품은 <strong>인벤토리 포인트</strong>, 거래는 <strong>제닛</strong></p>
+    <p>• 큰일은 <strong>의식·프로젝트</strong>로, 회복은 <strong>휴식</strong>으로</p>
+  </div>
+
+  <footer class="guide-footer">
+    <div class="ornament">◆ ◆ ◆</div>
+    파뷸라 울티마 퀵가이드 · 어드벤처<br>
+    아이템 가격·의식·프로젝트의 상세 규칙은 코어 룰북을 참고하세요
+  </footer>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const btns = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        btns.forEach(b => b.classList.toggle('active', b === btn));
+        panels.forEach(p => p.classList.toggle('active', p.id === 'tab-' + tab));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(setupReveal, 60);
+      });
+    });
+
+    /* floating arcane particles */
+    (function particles() {
+      const box = document.getElementById('particles');
+      if (!box) return;
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return;
+      const N = window.innerWidth < 600 ? 14 : 26;
+      for (let i = 0; i < N; i++) {
+        const p = document.createElement('span');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + 'vw';
+        const dur = 14 + Math.random() * 18;
+        p.style.animationDuration = dur + 's';
+        p.style.animationDelay = -Math.random() * dur + 's';
+        const size = 2 + Math.random() * 2.5;
+        p.style.width = size + 'px'; p.style.height = size + 'px';
+        p.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
+        if (Math.random() > 0.7) p.style.background = 'radial-gradient(circle, var(--arcane-light), transparent 70%)';
+        box.appendChild(p);
+      }
+    })();
+
+    /* scroll progress */
+    const prog = document.getElementById('scrollProg');
+    function onScroll() {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      prog.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0';
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+
+    /* reveal on scroll (within active panel) */
+    let io;
+    function setupReveal() {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const active = document.querySelector('.tab-panel.active');
+      if (!active) return;
+      const targets = active.querySelectorAll('.box, .flow-step, .sec-title, .scene-card, .mini, .check-table, .threat-table, .ip-item, .seq-item, .step');
+      if (io) io.disconnect();
+      io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -6% 0px', threshold: 0.04 });
+      targets.forEach(t => { t.classList.add('reveal'); io.observe(t); });
+    }
+    setupReveal();
+  })();
+</script>
+
+</body>
+</html>
